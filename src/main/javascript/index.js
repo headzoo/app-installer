@@ -1,10 +1,21 @@
 import ReactDOM from 'react-dom';
-import { DeskproAppContainer } from '@deskproapps/deskproapps-sdk-react';
 import App from './App';
+import {DefaultInstaller} from './DefaultInstaller';
 
-export function runApp(app) {
+export function runAppWithDefaultInstaller(dpapp, appName) {
   ReactDOM.render(
-    <DeskproAppContainer app={app} name={'Your app name'} mainComponent={App} />,
+    <App dpapp={dpapp} manifest={manifest} installer={DefaultInstaller}/>,
     document.getElementById('deskpro-app')
   );
+}
+
+export function runAppWithInstaller(dpapp, appName, installer) {
+  ReactDOM.render(
+    <App dpapp={dpapp} manifest={manifest} installer={installer}/>,
+    document.getElementById('deskpro-app')
+  );
+}
+
+export function runApp(dpapp) {
+  return runAppWithDefaultInstaller(dpapp, null);
 }

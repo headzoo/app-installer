@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import App from './App';
-import {DefaultInstaller} from './DefaultInstaller';
+import {DefaultInstaller} from './Components/DefaultInstaller';
 
 export function runAppWithDefaultInstaller(dpapp, appName) {
   ReactDOM.render(

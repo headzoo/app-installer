@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
+import AutoForm from 'uniforms-unstyled/AutoForm';
 import {UniformsSettingsTransformer} from '../Uniforms'
 
 export class SettingsForm extends React.Component

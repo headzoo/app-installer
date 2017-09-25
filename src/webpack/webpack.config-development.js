@@ -63,7 +63,6 @@ module.exports = function (env)
           include: [
             path.resolve(PROJECT_ROOT_PATH, 'src/main/javascript'),
             path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskproapps', 'deskproapps-sdk-core'),
-            path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskproapps', 'deskproapps-sdk-react'),
             path.resolve(PROJECT_ROOT_PATH, 'node_modules', 'uniforms', 'src'),
             path.resolve(PROJECT_ROOT_PATH, 'node_modules', 'uniforms-unstyled', 'src')
           ].map(path => fs.realpathSync(path)),
@@ -109,7 +108,7 @@ module.exports = function (env)
     plugins: [
       extractCssPlugin,
 
-      new dpat.Webpack.optimize.CommonsChunkPlugin({name: ['vendor'], minChunks: Infinity}),
+      new dpat.Webpack.optimize.CommonsChunkPlugin({name: ['install-vendor'], minChunks: Infinity}),
       new dpat.Webpack.NamedModulesPlugin(),
 
       new dpat.Webpack.CopyWebpackPlugin(resources, { debug: true, copyUnmodified: true }),

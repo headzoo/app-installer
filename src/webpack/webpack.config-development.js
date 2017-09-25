@@ -49,11 +49,11 @@ module.exports = function (env)
     },
     devtool: 'inline-source-map',
     entry: {
-      main: [
+      install: [
         `webpack-dev-server/client?http://localhost:31080`,
         path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js')
       ],
-      vendor: bundlePackages
+      'install-vendor': bundlePackages
     },
     module: {
       loaders: [
@@ -64,10 +64,9 @@ module.exports = function (env)
             path.resolve(PROJECT_ROOT_PATH, 'src/main/javascript'),
             path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskproapps', 'deskproapps-sdk-core'),
             path.resolve(PROJECT_ROOT_PATH, 'node_modules', '@deskproapps', 'deskproapps-sdk-react'),
-
             path.resolve(PROJECT_ROOT_PATH, 'node_modules', 'uniforms', 'src'),
             path.resolve(PROJECT_ROOT_PATH, 'node_modules', 'uniforms-unstyled', 'src')
-          ],
+          ].map(path => fs.realpathSync(path)),
           options: babelOptions
         },
         {

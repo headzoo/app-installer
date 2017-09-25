@@ -34,7 +34,7 @@
     "targets": [
       {
         "target": "install",
-        "url": "html/index.html"
+        "url": "html/install.html"
       }
     ],
     "settings": [],

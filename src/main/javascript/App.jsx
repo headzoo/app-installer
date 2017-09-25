@@ -22,19 +22,27 @@ export class App extends React.Component
   componentDidMount()
   {
     const { appName, dpapp } = this.props;
+    let getManifest;
 
-    let appID = null;
+    if (! appName && dpapp.context.hasProperty('manifest')) {
+      const manifest = dpapp.context.getProperty('manifest');
+      getManifest = Promise.resolve(manifest);
+    } else if (appName) {
+      getManifest = dpapp.restApi.get(`apps/${appName}`)
+        .then((response) => {
+          const appID = readApplicationID(response);
+          return dpapp.restApi.get(`DP_API/apps/${app}/manifest`);
+        })
+        .then(({data: manifest}) => manifest)
+    } else {
+      getManifest = Promise.reject(null);
+    }
 
-    dpapp.restApi.get(`apps/${appName}`)
-      .then((response) => {
-        appID = readApplicationID(response);
-        return dpapp.restApi.get(`DP_API/apps/${app}/manifest`);
-      })
-      .then(({ data: manifest }) => {
+    getManifest
+      .then(manifest => {
         const error = null;
         const screen = error ? 'error' : 'normal';
-
-        this.setState({ error, manifest, screen, appID });
+        this.setState({ error, manifest, screen });
       })
       .catch((response) => { // eslint-disable-line no-unused-expressions, no-unused-vars
         const state = { error: 'error' };
@@ -43,7 +51,7 @@ export class App extends React.Component
     ;
   }
 
-  shouldComponentUpdate() { return false; }
+  // shouldComponentUpdate() { return false; }
 
   initState()  {
     this.state = {
@@ -72,7 +80,8 @@ export class App extends React.Component
     }
 
     if (screen === 'normal') {
-      const { installer:Installer, manifest } = this.props;
+      const { installer:Installer } = this.props;
+      const { manifest } = this.state;
 
       return (
         <Installer
@@ -83,5 +92,10 @@ export class App extends React.Component
       );
     }
 
+    if (screen === 'loading') {
+      return (<p>Loading...</p>)
+    }
+
+    return null;
   }
 }

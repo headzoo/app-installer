@@ -17,10 +17,10 @@ export class SettingsForm extends React.Component
     this.formRef = null;
   }
 
-  shouldComponentUpdate(nextProps, nextState)
-  {
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState)
+  // {
+  //   return false;
+  // }
 
   submit()
   {

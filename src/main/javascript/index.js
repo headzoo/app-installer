@@ -1,21 +1,21 @@
 import ReactDOM from 'react-dom';
 import {App} from './App';
-import {DefaultInstaller} from './Components/DefaultInstaller';
+import {ScreenSettingsDefault} from './Components';
 
-export function runAppWithDefaultInstaller(dpapp, appName) {
+export function runAppWithDefaultInstaller(dpapp) {
   ReactDOM.render(
-    <App dpapp={dpapp} appName={appName} installer={DefaultInstaller}/>,
+    <App dpapp={dpapp} installer={ScreenSettingsDefault}/>,
     document.getElementById('deskpro-app')
   );
 }
 
-export function runAppWithInstaller(dpapp, appName, installer) {
+export function runAppWithInstaller(dpapp, installer) {
   ReactDOM.render(
-    <App dpapp={dpapp} appName={appName} installer={installer}/>,
+    <App dpapp={dpapp}  installer={installer}/>,
     document.getElementById('deskpro-app')
   );
 }
 
 export function runApp(dpapp) {
-  runAppWithDefaultInstaller(dpapp, null);
+  runAppWithDefaultInstaller(dpapp);
 }

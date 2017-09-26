@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
-export class DefaultInstaller extends React.Component
+export class ScreenSettingsDefault extends React.Component
 {
   static propTypes = {
     install: PropTypes.func.isRequired,

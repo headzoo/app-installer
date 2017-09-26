@@ -1,8 +1,31 @@
 import SimpleSchema from 'simpl-schema';
 import { SettingTypes } from '../Setting';
 
+
+import SimpleSchema2Bridge from 'uniforms/SimpleSchema2Bridge';
+import SelectField from 'uniforms-unstyled/SelectField'; // Choose your theme package.
+import LongTextField from 'uniforms-unstyled/LongTextField'; // Choose your theme package
+
+/**
+ * @param {SettingDefProps} props
+ */
+const mapValidatorProps = (props) =>
+{
+  if (props.validator && props.validator.type === 'regex') {
+    return {regEx: new RegExp(props.validator.pattern)};
+  }
+
+  return {};
+};
+
 export class UniformsSettingsTransformer
 {
+  static defsToSchemaBridge(definitions)
+  {
+    const schema = UniformsSettingsTransformer.defsToSchema(definitions);
+    return new SimpleSchema2Bridge(schema);
+  }
+
   /**
    * @param {Array} definitions
    * @return {SimpleSchema}
@@ -28,13 +51,11 @@ export class UniformsSettingsTransformer
 
     /**
      * @param {Object} acc
-     * @param {String} key
-     * @param {Object} def
+     * @param fragment
      * @return {*}
      */
-    const reducer = (acc, {key, def}) => {
-      acc[key] = def;
-      return acc;
+    const reducer = (acc, fragment) => {
+      return { ...acc, ...fragment };
     };
 
     const mapped = definitions.map(mapper).filter(transformed => !!transformed);
@@ -47,59 +68,95 @@ export class UniformsSettingsTransformer
   }
 
   /**
-   * @param props
-   * @return {{key, def: {type: String}}}
+   * @param {SettingDefProps} props
+   * @return {{}}
    */
   static transformChoice(props)
   {
+    if (props.multi) {
+      return {
+        [props.name]: {
+          type: Array,
+          defaultValue: props.defaultValue,
+          optional: !props.required,
+          allowedValues: props.choices.map(choice => choice.value),
+          uniforms: {
+            component: SelectField,
+            options: props.choices.map(choice => ({label: choice.title, value: choice.value}))
+          }
+        },
+        [`${props.name}.$`]: {
+          type: String
+        }
+      };
+    }
+
     return {
-      key: props.name,
-      def: {
-        type: String
+      [props.name]: {
+        type: String,
+        defaultValue: props.defaultValue,
+        optional: !props.required,
+        allowedValues: props.choices.map(choice => choice.value),
+        uniforms: {
+          component: SelectField,
+          options: props.choices.map(choice => ({label: choice.title, value: choice.value}))
+        }
       }
     };
+
   }
 
   /**
    * @param props
-   * @return {{key, def: {type: String}}}
+   * @return {{}}
    */
   static transformText(props)
   {
+    const validator = mapValidatorProps(props);
+
     return {
-      key: props.name,
-      def: {
-        type: String
+      [props.name] : {
+        ...validator,
+        type: String,
+        defaultValue: props.defaultValue,
+        optional: !props.required
       }
     };
   }
 
   /**
-   * @param props
-   * @return {{key, def: {type: String}}}
+   * @param {SettingDefProps} props
+   * @return {{}}
    */
   static transformTextarea(props)
   {
+    const validator = mapValidatorProps(props);
     return {
-      key: props.name,
-      def: {
-        type: String
+      [props.name] : {
+        ...validator,
+        type: String,
+        defaultValue: props.defaultValue,
+        optional: !props.required,
+        uniforms: {
+          component: LongTextField
+        }
       }
     };
+
   }
 
   /**
-   * @param props
-   * @return {{key, def: {type: String}}}
+   * @param {SettingDefProps} props
+   * @return {{}}
    */
   static transformBoolean(props)
   {
     return {
-      key: props.name,
-      def: {
-        type: String
+      [props.name] : {
+        type: Boolean,
+        defaultValue: props.defaultValue,
+        optional: !props.required
       }
     };
   }
-
-};
+}

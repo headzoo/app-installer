@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import AutoForm from 'uniforms-unstyled/AutoForm';
-import {UniformsSettingsTransformer} from '../Uniforms'
+import {UniformsSettingsTransformer} from './UniformsSettingsTransformer'
+import {Empty} from '../Components'
 
-export class SettingsForm extends React.Component
+export class UniformsSettingsForm extends React.Component
 {
   static propTypes = {
     settings: PropTypes.array.isRequired,
@@ -30,8 +31,12 @@ export class SettingsForm extends React.Component
   render()
   {
     const { settings, onSubmit } = this.props;
-    const schema = UniformsSettingsTransformer.defsToSchema(settings);
+    const schema = UniformsSettingsTransformer.defsToSchemaBridge(settings);
 
-    return (<AutoForm ref={ref => this.formRef = ref} schema={schema} onSubmit={onSubmit} />);
+    return (<AutoForm
+      submitField={Empty}
+      ref={ref => this.formRef = ref} schema={schema}
+      onSubmit={onSubmit}
+    />);
   }
 }

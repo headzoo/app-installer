@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 
 import {UniformsSettingsForm} from './Uniforms';
-import {ScreenInstall} from './Components';
-import {AppInstallService} from './AppInstallService';
+import {ScreenInstall} from './UI';
+import {AppInstallerService} from './AppInstallerService.js';
 
-export class App extends React.Component
+export class AppInstallerApp extends React.Component
 {
   static propTypes = {
     dpapp: PropTypes.object.isRequired,
@@ -20,23 +20,9 @@ export class App extends React.Component
 
   componentDidMount()
   {
-    const { dpapp } = this.props;
-    const { entityId: appId, entityType } = dpapp.context;
-
-    let getManifest;
-
-    if (entityType === 'app' && dpapp.context.hasProperty('manifest')) {
-      const manifest = dpapp.context.getProperty('manifest');
-      getManifest = Promise.resolve(manifest);
-    } else if (entityType === 'app') {
-      getManifest = dpapp.restApi.get(`apps/${appId}/manifest`).then(({data: manifest}) => manifest)
-    } else {
-      getManifest = Promise.reject(null);
-    }
-
-    getManifest
+    this.loadManifest()
       .then(manifest => ({ error:null, manifest, screen: 'settings' }))
-      .catch((response) => ({ error: 'error' })) // eslint-disable-line no-unused-expressions, no-unused-vars
+      .catch(response => ({ error: 'error' })) // eslint-disable-line no-unused-expressions, no-unused-vars
       .then(state => this.setState(state))
     ;
   }
@@ -53,8 +39,28 @@ export class App extends React.Component
   }
 
   /**
+   * @return {Promise.<{}>}
+   */
+  loadManifest()
+  {
+    const { dpapp } = this.props;
+    const { entityId: appId, type: contextType } = dpapp.context;
+
+    if (contextType === 'app' && dpapp.context.hasProperty('manifest')) {
+      const manifest = dpapp.context.getProperty('manifest');
+      return  Promise.resolve(manifest);
+    }
+
+    if (contextType === 'app' && appId) {
+      return dpapp.restApi.get(`apps/${appId}/manifest`).then(({ body }) => body);
+    }
+
+    return Promise.reject(null);
+  }
+
+  /**
    * @param {{}}settings
-   * @return {Promise.<TResult>}
+   * @return {Promise.<*>}
    */
   installApp(settings)
   {
@@ -65,7 +71,7 @@ export class App extends React.Component
 
     this.setState({ screen: 'install', installProgress: 0 });
 
-    const service = new AppInstallService();
+    const service = new AppInstallerService();
     return service.saveSettings(restApi, appId, settings)
       .then(() => {
         this.setState({ screen: 'install', installProgress: 33 });
@@ -79,7 +85,6 @@ export class App extends React.Component
         this.setState({ screen: 'install', installProgress: 100 });
       })
     ;
-
   }
 
   render()
@@ -93,8 +98,9 @@ export class App extends React.Component
     if (screen === 'settings') {
       const { installer:Installer } = this.props;
       const { manifest } = this.state;
+      const settings = JSON.parse(JSON.stringify(manifest.settings));
 
-      return (<Installer install={this.installApp.bind(this)} settings={manifest.settings} settingsForm={UniformsSettingsForm}/>);
+      return (<Installer install={this.installApp.bind(this)} settings={settings} settingsForm={UniformsSettingsForm}/>);
     }
 
     if (screen === 'install') {

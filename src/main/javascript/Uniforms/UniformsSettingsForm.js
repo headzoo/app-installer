@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 import AutoForm from 'uniforms-unstyled/AutoForm';
 import {UniformsSettingsTransformer} from './UniformsSettingsTransformer'
-import {Empty} from '../Components'
+import {Empty} from './Empty'
 
 export class UniformsSettingsForm extends React.Component
 {
@@ -33,10 +33,6 @@ export class UniformsSettingsForm extends React.Component
     const { settings, onSubmit } = this.props;
     const schema = UniformsSettingsTransformer.defsToSchemaBridge(settings);
 
-    return (<AutoForm
-      submitField={Empty}
-      ref={ref => this.formRef = ref} schema={schema}
-      onSubmit={onSubmit}
-    />);
+    return (<AutoForm submitField={Empty} ref={ref => this.formRef = ref} schema={schema} onSubmit={onSubmit}/>);
   }
 }

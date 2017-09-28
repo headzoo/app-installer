@@ -52,7 +52,7 @@ export class AppInstallerApp extends React.Component
     }
 
     if (contextType === 'app' && appId) {
-      return dpapp.restApi.get(`apps/${appId}/manifest`).then(({ body }) => body);
+      return dpapp.restApi.get(`apps/app:${appId}/manifest`).then(({ body }) => body);
     }
 
     return Promise.reject(null);
@@ -72,7 +72,8 @@ export class AppInstallerApp extends React.Component
     this.setState({ screen: 'install', installProgress: 0 });
 
     const service = new AppInstallerService();
-    return service.saveSettings(restApi, appId, settings)
+
+    return service.saveSettings(restApi, manifest.appName, settings)
       .then(() => {
         this.setState({ screen: 'install', installProgress: 33 });
         return service.createCustomFields(restApi, appId, manifest)

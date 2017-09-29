@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 import {UniformsSettingsForm} from './Uniforms';
-import {ScreenInstall} from './UI';
-import {AppInstallerService} from './AppInstallerService.js';
+import {ScreenInstall, PageApp} from './UI';
+import {AppInstallerService} from './AppInstallerService';
+import {AppInfoService} from './AppInfoService';
 
 export class AppInstallerApp extends React.Component
 {
@@ -20,14 +20,22 @@ export class AppInstallerApp extends React.Component
 
   componentDidMount()
   {
-    this.loadManifest()
-      .then(manifest => ({ error:null, manifest, screen: 'settings' }))
-      .catch(response => ({ error: 'error' })) // eslint-disable-line no-unused-expressions, no-unused-vars
+    const { entityId: appId } = this.props.dpapp.context;
+    const {restApi: api} = this.props.dpapp;
+
+    const appInfoService = new AppInfoService();
+    appInfoService.loadManifest({api, appId})
+      .then(manifest => {
+        return appInfoService.determineAssetEndpoint({api, appId, appVersion: manifest.appVersion})
+          .then(assetEndpoint => ({manifest, assetEndpoint}))
+        ;
+      })
+      .then(state => appInfoService.determineInstallType({api, appId}).then(installType => ({...state, installType})))
+      .then(state => ({ error:null,  screen: 'settings', ...state}))
+      .catch(response => { return { error: 'error' }; })
       .then(state => this.setState(state))
     ;
   }
-
-  // shouldComponentUpdate() { return false; }
 
   initState()  {
     this.state = {
@@ -35,57 +43,30 @@ export class AppInstallerApp extends React.Component
       error:     null,
       screen:    'loading',
       installProgress: 0,
+      assetEndpoint: '',
+      installType: 'first-time',
     };
   }
 
   /**
-   * @return {Promise.<{}>}
-   */
-  loadManifest()
-  {
-    const { dpapp } = this.props;
-    const { entityId: appId, type: contextType } = dpapp.context;
-
-    if (contextType === 'app' && dpapp.context.hasProperty('manifest')) {
-      const manifest = dpapp.context.getProperty('manifest');
-      return  Promise.resolve(manifest);
-    }
-
-    if (contextType === 'app' && appId) {
-      return dpapp.restApi.get(`apps/app:${appId}/manifest`).then(({ body }) => body);
-    }
-
-    return Promise.reject(null);
-  }
-
-  /**
-   * @param {{}}settings
+   * @param {{}} settings
    * @return {Promise.<*>}
    */
   installApp(settings)
   {
     const { entityId: appId } = this.props.dpapp.context;
     const { restApi } = this.props.dpapp;
+    const { manifest, installType } = this.state;
 
-    const { manifest } = this.state;
-
-    this.setState({ screen: 'install', installProgress: 0 });
+    const onProgress = (installProgress) => this.setState({ screen: 'install', installProgress });
+    onProgress(0);
 
     const service = new AppInstallerService();
+    if (installType === 'first-time') {
+      return service.firstTimeInstall({ api: restApi, manifest, appId, settings, onProgress});
+    }
 
-    return service.saveSettings(restApi, manifest.appName, settings)
-      .then(() => {
-        this.setState({ screen: 'install', installProgress: 33 });
-        return service.createCustomFields(restApi, appId, manifest)
-      })
-      .then(() => {
-        this.setState({ screen: 'install', installProgress: 66 });
-        return service.setInstalled(restApi, appId, { status: true})
-      })
-      .then(() => {
-        this.setState({ screen: 'install', installProgress: 100 });
-      })
-    ;
+    return service.update({ api: restApi, manifest, appId, settings, onProgress});
   }
 
   render()
@@ -98,15 +79,24 @@ export class AppInstallerApp extends React.Component
 
     if (screen === 'settings') {
       const { installer:Installer } = this.props;
-      const { manifest } = this.state;
+      const { manifest, assetEndpoint } = this.state;
       const settings = JSON.parse(JSON.stringify(manifest.settings));
 
-      return (<Installer install={this.installApp.bind(this)} settings={settings} settingsForm={UniformsSettingsForm}/>);
+      return (
+        <PageApp icon={`${assetEndpoint}/icon.png`} description={manifest.description} title={manifest.title} version={manifest.appVersion}>
+          <Installer install={this.installApp.bind(this)} settings={settings} settingsForm={UniformsSettingsForm}/>
+        </PageApp>
+      );
     }
 
     if (screen === 'install') {
-      const {installProgress} = this.state;
-      return <ScreenInstall progress={installProgress}/>
+      const {installProgress, manifest, assetEndpoint} = this.state;
+
+      return (
+        <PageApp icon={`${assetEndpoint}/icon.png`} description={manifest.description} title={manifest.title} version={manifest.appVersion}>
+          <ScreenInstall progress={installProgress}/>
+        </PageApp>
+      );
     }
 
     if (screen === 'loading') {

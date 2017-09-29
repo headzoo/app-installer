@@ -49,6 +49,48 @@ const toCustomFieldRequest = (appId, customField) =>
 export class AppInstallerService
 {
   /**
+   * @param {{post: function, put: function}}  api
+   * @param {{appName, customFields}} manifest
+   * @param {string} appId
+   * @param {{}} settings
+   * @param {function} onProgress
+   * @return {Promise.<*>}
+   */
+  firstTimeInstall({api, manifest, appId, settings, onProgress})
+  {
+    return this.saveSettings(api, appId, settings)
+      .then(() => {
+        onProgress(33);
+        return this.createCustomFields(api, appId, manifest)
+      })
+      .then(() => {
+        onProgress(66);
+        return this.setInstalled(api, appId, { status: true})
+      })
+      .then(() => onProgress(100))
+    ;
+  }
+
+  /**
+   * @param {{post: function, put: function}}  api
+   * @param {{}} manifest
+   * @param {string} appId
+   * @param {{}} settings
+   * @param {function} onProgress
+   * @return {Promise.<*>}
+   */
+  update({api, manifest, appId, settings, onProgress})
+  {
+    return this.saveSettings(api, appId, settings)
+      .then(() => {
+        onProgress(50);
+        return this.setInstalled(api, appId, { status: true})
+      })
+      .then(() => onProgress(100))
+      ;
+  }
+
+  /**
    * @param {{post: function}} api
    * @param {string} appId
    * @param {{}} values

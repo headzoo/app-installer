@@ -54,7 +54,7 @@ export class AppInstallerApp extends React.Component
    */
   installApp(settings)
   {
-    const { entityId: appId } = this.props.dpapp.context;
+    const { entityId: appId, onInstallStatus } = this.props.dpapp.context.toJS();
     const { restApi } = this.props.dpapp;
     const { manifest, installType } = this.state;
 
@@ -62,11 +62,17 @@ export class AppInstallerApp extends React.Component
     onProgress(0);
 
     const service = new AppInstallerService();
+    let installPromise;
+
     if (installType === 'first-time') {
-      return service.firstTimeInstall({ api: restApi, manifest, appId, settings, onProgress});
+      installPromise =  service.firstTimeInstall({ api: restApi, manifest, appId, settings, onProgress});
+    } else {
+      installPromise = service.update({ api: restApi, manifest, appId, settings, onProgress});
     }
 
-    return service.update({ api: restApi, manifest, appId, settings, onProgress});
+    installPromise.then(() => {
+      this.props.dpapp.emit(onInstallStatus, { status: 'success', manifest });
+    });
   }
 
   render()

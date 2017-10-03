@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/DeskproApps/app-installer#readme",
   "deskpro": {
-    "version": "2.1.0",
+    "version": "2.3.0",
     "title": "Your app title",
     "isSingle": true,
     "scope": "agent",
@@ -42,7 +42,7 @@
     "externalApis": []
   },
   "dependencies": {
-    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.18",
+    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.19",
     "deskpro-components": "^0.5.12",
     "prop-types": "^15.5.10",
     "react": "^15.5.3",
@@ -52,9 +52,14 @@
     "uniforms-unstyled": "1.20.4"
   },
   "devDependencies": {
+    "@deskproapps/dpat": "^0.6.0",
     "file-loader": "^0.11.2",
     "jsdom": "11.2.0",
     "react-test-renderer": "15.6.1",
     "url-loader": "^0.5.9"
+  },
+  "optionalDependencies": {
+    "docdash": "^0.4.0",
+    "jsdoc": "^3.5.4"
   }
 }

@@ -1,10 +1,11 @@
 import SimpleSchema from 'simpl-schema';
-import { SettingTypes } from '../Setting';
-
-
 import SimpleSchema2Bridge from 'uniforms/SimpleSchema2Bridge';
 import SelectField from 'uniforms-unstyled/SelectField'; // Choose your theme package.
 import LongTextField from 'uniforms-unstyled/LongTextField'; // Choose your theme package
+
+import { SettingTypes } from '../Setting';
+import BoolField from './BoolField';
+
 
 /**
  * @param {SettingDefProps} props
@@ -155,7 +156,10 @@ export class UniformsSettingsTransformer
       [props.name] : {
         type: Boolean,
         defaultValue: props.defaultValue,
-        optional: !props.required
+        optional: !props.required,
+        uniforms: {
+          component: BoolField
+        }
       }
     };
   }

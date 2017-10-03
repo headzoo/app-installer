@@ -2,7 +2,8 @@ import React from 'react';
 import { createAppFromProps } from '@deskproapps/deskproapps-sdk-core';
 import renderer from 'react-test-renderer';
 
-import App from '../../main/javascript/App';
+import {AppInstallerApp} from '../../main/javascript/AppInstallerApp';
+import {ScreenSettingsDefault} from '../../main/javascript/UI';
 
 test('successfully render the application in initial state', done => {
 
@@ -23,7 +24,7 @@ test('successfully render the application in initial state', done => {
   };
 
   const dpapp = createAppFromProps({ contextProps, instanceProps });
-  const component = renderer.create(<App dpapp={dpapp} />);
+  const component = renderer.create(<AppInstallerApp dpapp={dpapp} installer={ScreenSettingsDefault}/>);
 
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();

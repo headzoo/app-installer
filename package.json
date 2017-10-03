@@ -4,6 +4,7 @@
   "description": "A foundation to get you started developing React DeskPro Apps with the best developer experience",
   "main": "lib/main/javascript/index.js",
   "scripts": {
+    "release": "npm_bump",
     "dev": "dpat server .",
     "package": "dpat clean . && dpat compile . && dpat verify ./dist && dpat package .",
     "test": "dpat test ."
@@ -42,7 +43,7 @@
     "externalApis": []
   },
   "dependencies": {
-    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.19",
+    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.20",
     "deskpro-components": "^0.5.12",
     "prop-types": "^15.5.10",
     "react": "^15.5.3",

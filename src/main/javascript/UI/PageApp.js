@@ -14,9 +14,10 @@ export class PageApp extends React.Component
     return (
       <div>
         <div className={"appHeader"}>
-            <img className={"icon"} src={this.props.icon} />
-            <h1>{this.props.title}</h1>
-            <p>{this.props.description}</p>
+          <img className={"icon"} src={this.props.icon} />
+          <h2>{this.props.title}</h2>
+          <p>{this.props.description}</p>
+          <data> v{this.props.version} </data>
         </div>
         <hr />
         <div className="appMain">

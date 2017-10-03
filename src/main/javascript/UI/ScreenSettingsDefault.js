@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactDOM from 'react-dom';
 
 export class ScreenSettingsDefault extends React.Component
 {
@@ -23,17 +22,17 @@ export class ScreenSettingsDefault extends React.Component
     if (settings.length) {
       let formRef;
       return (
-        <div>
+        <div className={'settings'}>
           <SettingsForm settings={settings} ref={ref => formRef = ref} onSubmit={this.onSettings.bind(this)} />
-          <button onClick={() => formRef.submit()}>Install App</button>
+          <button className={'btn-install'} onClick={() => formRef.submit()}>Install App</button>
         </div>
       );
     }
 
     return (
-      <div>
+      <div className={'no-settings'}>
         <p>Click the Install button below to begin the installation.</p>
-        <button onClick={install.bind(null, [])}>Install App</button>
+        <button className={'btn-install'} onClick={install.bind(null, [])}>Install App</button>
       </div>
     );
   }

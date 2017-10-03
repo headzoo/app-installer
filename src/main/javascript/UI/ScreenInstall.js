@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Progress from 'deskpro-components/lib/Components/Progress'
+import ProgressBar from 'deskpro-components/lib/Components/ProgressBar'
 
 export class ScreenInstall extends React.Component
 {
@@ -8,6 +10,10 @@ export class ScreenInstall extends React.Component
   };
 
   render() {
-    return <p>Installing {this.props.progress} %</p>
+    return (
+      <Progress size="large" type="primary" style={{ border: '1px solid #ccc' }}>
+        <ProgressBar percent={this.props.progress}>{this.props.progress} %</ProgressBar>
+      </Progress>
+    );
   }
 }

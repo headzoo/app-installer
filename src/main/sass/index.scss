@@ -1,3 +1,111 @@
-/** entrypoint for your custom scss **/
-//$dp-styles-font-path: "~deskpro-components/src/styles/fonts/";
-//@import "~deskpro-components/src/styles/main.scss";
+$dp-styles-font-path: "~deskpro-components/src/styles/fonts/";
+@import "~deskpro-components/src/styles/main.scss";
+
+@import "./reset";
+
+$margin: 15px;
+
+.appHeader, .appMain, hr {
+  margin-left: $margin;
+  margin-right: $margin;
+}
+
+.appMain {
+  padding-top: $margin;
+  padding-bottom: $margin;
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px dotted #aaa;
+}
+
+.appHeader {
+
+  img {
+    height: 64px;
+    float: left;
+    margin-right: 24px;
+  }
+
+  data {
+    font-weight: bold;
+  }
+}
+
+.appMain {
+
+  form > div {
+    border-bottom: 1px dotted #aaa;
+    padding-bottom: $margin;
+    margin-bottom: $margin;
+    display: table;
+    width: 100%;
+
+    > label {
+      display: table-cell;
+      //display: inline-block;
+      width: 180px;
+      padding-right: 20px;
+      vertical-align: top;
+    }
+
+    input, select, textarea {
+      display: table-cell;
+
+      height: 31px;
+      padding: 6px 6px 6px 6px;
+      font-size: 12px;
+      line-height: 1.42857143;
+      color: #555555;
+      background: #ffffff none;
+      border: 1px solid #ccc;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #66afe9;
+      outline: 0;
+    }
+
+    textarea, button {
+      height: auto;
+      resize: vertical;
+    }
+
+    input:not([type="checkbox"]), textarea {
+      width: 100%;
+    }
+
+    select {
+      width: 200px;
+    }
+  }
+
+  .btn-install {
+
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    padding: 6px 14px 5px 14px;
+
+    color: #ffffff;
+    background: #5cb85c linear-gradient(to bottom, #63bb63 0%, #419641 100%) repeat-x;
+    border: 1px solid #419641;
+    border-bottom-color: #439943;
+
+
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+
+    font-size: 12px;
+    line-height: 1.42857143;
+  }
+}
+

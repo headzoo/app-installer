@@ -1,23 +1,23 @@
 import {CustomField} from './CustomField'
 
-const toSettingsRequest = (appId, name, value) => {
+const toSettingsRequest = (instanceId, appId, name, value) => {
   return {
     method: "PUT",
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    url: `apps/${appId}/state/app:${appId}/${name}`,
+    url: `apps/${instanceId}/state/app:${appId}/${name}`,
     data: { value }
   };
 };
 
 /**
- * @param {string} appId
+ * @param {string} instanceId
  * @param {CustomField} customField
  * @return {{method: string, headers: {Accept: string, Content-Type: string}, url: string, body}}
  */
-const toCustomFieldRequest = (appId, customField) =>
+const toCustomFieldRequest = (instanceId, customField) =>
 {
   const urlMap = {
     'ticket': `/ticket_custom_fields`,
@@ -40,7 +40,7 @@ const toCustomFieldRequest = (appId, customField) =>
     data: {
       title: customField.alias,
       is_enabled: customField.enabled,
-      alias: customField.getQualifiedAlias(appId),
+      alias: customField.getQualifiedAlias(instanceId),
       handler_class: customField.getHandlerClass()
     }
   };
@@ -50,22 +50,30 @@ export class AppInstallerService
 {
   /**
    * @param {{post: function, put: function}}  api
+   */
+  constructor({ api })
+  {
+    this.props = { api }
+  }
+
+  /**
    * @param {{appName, customFields}} manifest
+   * @param {string} instanceId
    * @param {string} appId
    * @param {{}} settings
    * @param {function} onProgress
    * @return {Promise.<*>}
    */
-  firstTimeInstall({api, manifest, appId, settings, onProgress})
+  firstTimeInstall({manifest, instanceId, appId, settings, onProgress})
   {
-    return this.saveSettings(api, appId, settings)
+    return this.saveSettings(instanceId, appId, settings)
       .then(() => {
         onProgress(33);
-        return this.createCustomFields(api, appId, manifest)
+        return this.createCustomFields(instanceId, manifest)
       })
       .then(() => {
         onProgress(66);
-        return this.setInstalled(api, appId, { status: true})
+        return this.setInstalled(instanceId, { status: true})
       })
       .then(() => onProgress(100))
     ;
@@ -74,71 +82,70 @@ export class AppInstallerService
   /**
    * @param {{post: function, put: function}}  api
    * @param {{}} manifest
+   * @param {string} instanceId
    * @param {string} appId
    * @param {{}} settings
    * @param {function} onProgress
    * @return {Promise.<*>}
    */
-  update({api, manifest, appId, settings, onProgress})
+  update({manifest, instanceId, appId, settings, onProgress})
   {
-    return this.saveSettings(api, appId, settings)
+    return this.saveSettings(instanceId, appId, settings)
       .then(() => {
         onProgress(50);
-        return this.setInstalled(api, appId, { status: true})
+        return this.setInstalled(instanceId, { status: true})
       })
       .then(() => onProgress(100))
       ;
   }
 
   /**
-   * @param {{post: function}} api
+   * @param {string} instanceId
    * @param {string} appId
    * @param {{}} values
    * @return {Promise.<{}>}
    */
-  saveSettings(api, appId, values)
+  saveSettings(instanceId, appId, values)
   {
     const url = `batch`;
     const requests = Object.keys(values).reduce((acc, key) => {
-      acc[key] = toSettingsRequest(appId, key, values[key]);
+      acc[key] = toSettingsRequest(instanceId, appId, key, values[key]);
       return acc;
     }, {});
 
     if (Object.keys(requests).length > 0) {
-      return api.post(url, {requests }).then(() => values);
+      return this.props.api.post(url, {requests }).then(() => values);
     }
 
     return Promise.resolve(values);
   }
 
   /**
-   * @param {{post: function}} api
-   * @param {String} appId
+   * @param {String} instanceId
    * @param {[]} customFields
    * @return {Promise.<[]>}
    */
-  createCustomFields(api, appId, { customFields })
+  createCustomFields(instanceId, { customFields })
   {
     if (customFields instanceof Array && customFields.length > 0) {
       const url = `batch`;
       const requests = customFields.map(props => (new CustomField(props))).reduce((acc, customField) => {
-        acc[customField.alias] = toCustomFieldRequest(appId, customField);
+        acc[customField.alias] = toCustomFieldRequest(instanceId, customField);
         return acc;
       }, {});
-      return api.post(url, { requests }).then(() => customFields);
+      return this.props.api.post(url, { requests }).then(() => customFields);
     }
 
     return Promise.resolve(customFields);
   }
 
   /**
-   * @param {{put: function}} api
-   * @param appId
+   * @param instanceId
    * @param {boolean} status
    * @return {Promise.<{status: *}>}
    */
-  setInstalled(api, appId, { status })
+  setInstalled(instanceId, { status })
   {
-    return api.put(`apps/${appId}`, { is_installed: status }).then(() => ({ status }));
+    return this.props.api.put(`apps/${instanceId}`, { is_installed: status }).then(() => ({ status }));
   }
 }

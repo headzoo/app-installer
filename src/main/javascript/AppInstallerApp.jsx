@@ -21,16 +21,16 @@ export class AppInstallerApp extends React.Component
   componentDidMount()
   {
     const { entityId: appId } = this.props.dpapp.context;
-    const {restApi: api} = this.props.dpapp;
+    const {restApi: api, instanceId} = this.props.dpapp;
 
     const appInfoService = new AppInfoService();
-    appInfoService.loadManifest({api, appId})
+    appInfoService.loadManifest({api, instanceId})
       .then(manifest => {
         return appInfoService.determineAssetEndpoint({api, appId, appVersion: manifest.appVersion})
           .then(assetEndpoint => ({manifest, assetEndpoint}))
         ;
       })
-      .then(state => appInfoService.determineInstallType({api, appId}).then(installType => ({...state, installType})))
+      .then(state => appInfoService.determineInstallType({api, instanceId}).then(installType => ({...state, installType})))
       .then(state => ({ error:null,  screen: 'settings', ...state}))
       .catch(response => { return { error: 'error' }; })
       .then(state => this.setState(state))
@@ -54,20 +54,21 @@ export class AppInstallerApp extends React.Component
    */
   installApp(settings)
   {
-    const { entityId: appId, onInstallStatus } = this.props.dpapp.context.toJS();
+    const { onInstallStatus } = this.props.dpapp.context.toJS();
     const { restApi } = this.props.dpapp;
     const { manifest, installType } = this.state;
+    const { appId, instanceId } = this.props.dpapp;
 
     const onProgress = (installProgress) => this.setState({ screen: 'install', installProgress });
     onProgress(0);
 
-    const service = new AppInstallerService();
+    const service = new AppInstallerService({ api: restApi });
     let installPromise;
 
     if (installType === 'first-time') {
-      installPromise =  service.firstTimeInstall({ api: restApi, manifest, appId, settings, onProgress});
+      installPromise =  service.firstTimeInstall({ manifest, appId, instanceId, settings, onProgress});
     } else {
-      installPromise = service.update({ api: restApi, manifest, appId, settings, onProgress});
+      installPromise = service.update({ manifest, appId, instanceId, settings, onProgress });
     }
 
     installPromise.then(() => {

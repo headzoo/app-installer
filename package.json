@@ -1,13 +1,14 @@
 {
   "name": "@deskproapps/app-installer",
   "version": "0.1.0",
-  "description": "A foundation to get you started developing React DeskPro Apps with the best developer experience",
+  "description": "allows Deskpro administrators to install applications",
   "main": "lib/main/javascript/index.js",
   "scripts": {
-    "release": "npm_bump",
     "dev": "dpat server .",
     "package": "dpat clean . && dpat compile . && dpat verify ./dist && dpat package .",
-    "test": "dpat test ."
+    "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md",
+    "test": "dpat test .",
+    "verify": "dpat verify ./dist"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,7 @@
   "homepage": "https://github.com/DeskproApps/app-installer#readme",
   "deskpro": {
     "version": "2.3.0",
-    "title": "Your app title",
+    "title": "App Installer",
     "isSingle": true,
     "scope": "agent",
     "targets": [
@@ -43,7 +44,7 @@
     "externalApis": []
   },
   "dependencies": {
-    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.20",
+    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.21",
     "deskpro-components": "^0.5.12",
     "prop-types": "^15.5.10",
     "react": "^15.5.3",
@@ -53,14 +54,12 @@
     "uniforms-unstyled": "1.20.4"
   },
   "devDependencies": {
-    "@deskproapps/dpat": "^0.6.0",
+    "@deskproapps/dpat": "0.7.0",
+    "changelog-verify": "1.0.4",
+    "version-changelog": "2.1.0",
     "file-loader": "^0.11.2",
     "jsdom": "11.2.0",
     "react-test-renderer": "15.6.1",
     "url-loader": "^0.5.9"
-  },
-  "optionalDependencies": {
-    "docdash": "^0.4.0",
-    "jsdoc": "^3.5.4"
   }
 }

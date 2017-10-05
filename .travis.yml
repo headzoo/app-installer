@@ -2,16 +2,20 @@ language: node_js
 node_js:
 - '6'
 install:
-- npm install --no-optional && npm install @deskproapps/dpat@0.6.0
+- npm install --no-optional
 script:
 - npm test
 before_deploy: npm run package
 deploy:
   - provider: releases
-    skip_cleanup: true
     api_key:
-      secure: OXrL4Hn3fd+QKFyiKFQWlr2v8XKEy9kWuhGXTgWRPsDK7nkc38vCBB9nikLrjS4gj7FiZsjC1MYRxoXTlLlNshpXduOITdvL03mfWYnDlGUk7ybFcYemBZ5yFgEMXR7fnvE9Wk/Sv11dVoNHxSHwpLnxcNKO3VUBD0yHeYgvjGwVA/7xwmmt3lSqb8w3BHv7TNlF4i/qN+rJieg01hXMvjGa851rM7PPdEtWAxoIP4e0gvtFOrGExp5YXEHq40hSSOn1r2DM3ESvxZnyuqVGcYI2p+ouIc4JkNFp8ExJVH4eD2xCkKB7+JzFzbOGsoHgRROr5IB5qFf53jSynVQHdbvMeLejzGIaI+kmvYxOH62ysq3YjhYbv0V2oh3e6lJDkFjGSnHia00+TGGKP/Zf8So2y+BUAXzAy7c3u8dYGApY/QvWwyvheACskn2wJ81W8V/o2+c9b/TyV3IPNy0YjnXzVE5kTzcs/D/KUvQMjnN0o+rHkFTBw31IWtOZ6FR61+Gdhr60spwkRa/5xiUg0V5WKd2pfgkZ/L+rjFmEfvIphEpm98WIa4ktNFM8tc8DIqEOWvgO94iRaCy2SxMkhpytyEWcy0Eq7SqHw51qod3VCVeiEd07GBtdF/taKcobD/UNUc7Yy3AYwvU4mR6gPeow8vdQEysI8AUFjHCg6G8=
+      secure: ikEYQQEjYENp6xiBVKaqKzppKJGq+HNdRKle55ymfODg0f/kCGGAlTkQDAh275koFoVbG02c2iz2TaS/F/UaHtSlNswf3g9pzpv76Kw7yyey/txEJ044nbd9V7Z3sxRIpr/vDSQ94bhmwzxi8qN3wJpIGGaBfHc7tLUqY41e1KMWGs/dHWkbKL8+cav3xkoBd39tNfV267oClWpdb7xccf2mW2iZH6AgHU03jhsE2kQkaXuUL0G5VuqkKIvPMZFQM+R2AYtLf+mgF5/dV8OpRxibn2F0wLzAVmkGwaGgDaUubd42oa7B/B6emINzCTh4boRN/dzAjWt7ZQKnkS4Uda830w1qSobRzWOaCXhuW33OrcVUbdkicvgoliCAhotNtnFRd6wZkmPrLy/TdZo+6Xh35UaSEIexX0ifvjD+iLnbttBxb+5EFiurYqaXz1v/9Fh0azGqZsWOs+TgRoXN59zWEC/F2Ggs0x3/K1sy2POVDWlJyKQRo7Qq/IOuycJpCfgExCRL+CLnBg4M9inEO+/71cXBhgnPjzXQsdy8+qdaKuYFm4Gb5t6D2RRKdUaJN6hhlR1otSE9TCLD49rMk6TUxtn+OndCpvh8LTyLcTU+Ed11kDJh5IKASIxUyDkUQNGkdSLwuLmWC6j5pVQdJdCzf5EXj/UCXq8d+CfkFSw=
     file: dist/app.zip
     on:
       repo: DeskproApps/app-installer
+  - provider: npm
+    api_key: $NPM_TOKEN
+    email: radu.helstern@gmail.com
+    skip_cleanup: true
+    on:
       tags: true

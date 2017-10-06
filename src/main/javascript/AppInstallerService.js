@@ -38,8 +38,9 @@ const toCustomFieldRequest = (instanceId, customField) =>
     },
     url: url,
     data: {
-      title: customField.alias,
-      is_enabled: customField.enabled,
+      title: customField.title,
+      is_enabled: true,
+      is_agent_field: true,
       alias: customField.getQualifiedAlias(instanceId),
       handler_class: customField.getHandlerClass()
     }
@@ -80,7 +81,6 @@ export class AppInstallerService
   }
 
   /**
-   * @param {{post: function, put: function}}  api
    * @param {{}} manifest
    * @param {string} instanceId
    * @param {string} appId

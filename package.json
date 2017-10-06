@@ -45,21 +45,19 @@
   },
   "dependencies": {
     "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.21",
-    "deskpro-components": "^0.5.12",
     "prop-types": "^15.5.10",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
     "simpl-schema": "0.3.2",
-    "uniforms": "1.20.3",
+    "uniforms": "1.20.4",
     "uniforms-unstyled": "1.20.4"
   },
   "devDependencies": {
+    "deskpro-components": "1.0.2",
     "@deskproapps/dpat": "0.7.0",
     "changelog-verify": "1.0.4",
     "version-changelog": "2.1.0",
-    "file-loader": "^0.11.2",
     "jsdom": "11.2.0",
-    "react-test-renderer": "15.6.1",
-    "url-loader": "^0.5.9"
+    "react-test-renderer": "15.6.1"
   }
 }

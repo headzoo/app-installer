@@ -17,3 +17,5 @@ deploy:
     api_key: $NPM_TOKEN
     email: radu.helstern@gmail.com
     skip_cleanup: true
+    on:
+      all_branches: true

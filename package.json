@@ -61,5 +61,8 @@
     "react-test-renderer": "15.6.1",
     "url-loader": "0.6.2",
     "version-changelog": "2.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

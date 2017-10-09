@@ -2,14 +2,14 @@ export class CustomField
 {
   /**
    * @param {String} type
-   * @param {boolean} enabled
    * @param {String} alias
    * @param {String} attachedTo
+   * @param {String} title
    * @param [rest]
    */
-  constructor({type, enabled, alias, attachedTo, ...rest})
+  constructor({type, alias, attachedTo, title, ...rest})
   {
-    this.props = {type, enabled, alias, attachedTo, ...rest};
+    this.props = {type, alias, attachedTo, title, ...rest};
   }
 
   /**
@@ -20,12 +20,12 @@ export class CustomField
   /**
    * @type {String}
    */
-  get attachedTo() { return this.props.attachedTo; }
+  get title() { return this.props.title; }
 
   /**
-   * @type {Boolean}
+   * @type {String}
    */
-  get enabled() { return this.props.enabled; }
+  get attachedTo() { return this.props.attachedTo; }
 
   /**
    * @type {String}
@@ -33,7 +33,7 @@ export class CustomField
   get alias() { return this.props.alias; }
 
   /**
-   * @return {}
+   * @return {{}}
    */
   toJSON() { return JSON.parse(JSON.stringify(this.props)); }
 

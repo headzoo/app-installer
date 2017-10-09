@@ -16,12 +16,12 @@ export class AppInfoService
 
   /**
    * @param api
-   * @param appId
+   * @param instanceId
    * @return {Promise.<{}>}
    */
-  determineInstallType({ api, appId })
+  determineInstallType({ api, instanceId })
   {
-    return api.get(`apps/app:${appId}/status`)
+    return api.get(`apps/${instanceId}/status`)
       .then(({ body }) => {
         return body;
       })
@@ -34,9 +34,9 @@ export class AppInfoService
   /**
    * @return {Promise.<{}>}
    */
-  loadManifest({ api, appId  })
+  loadManifest({ api, instanceId  })
   {
-    return api.get(`apps/app:${appId}/manifest`).then(({ body }) => body);
+    return api.get(`apps/${instanceId}/manifest`).then(({ body }) => body);
   }
 
 }

@@ -9,7 +9,7 @@ before_deploy: npm run package
 deploy:
   - provider: releases
     api_key:
-      secure: ikEYQQEjYENp6xiBVKaqKzppKJGq+HNdRKle55ymfODg0f/kCGGAlTkQDAh275koFoVbG02c2iz2TaS/F/UaHtSlNswf3g9pzpv76Kw7yyey/txEJ044nbd9V7Z3sxRIpr/vDSQ94bhmwzxi8qN3wJpIGGaBfHc7tLUqY41e1KMWGs/dHWkbKL8+cav3xkoBd39tNfV267oClWpdb7xccf2mW2iZH6AgHU03jhsE2kQkaXuUL0G5VuqkKIvPMZFQM+R2AYtLf+mgF5/dV8OpRxibn2F0wLzAVmkGwaGgDaUubd42oa7B/B6emINzCTh4boRN/dzAjWt7ZQKnkS4Uda830w1qSobRzWOaCXhuW33OrcVUbdkicvgoliCAhotNtnFRd6wZkmPrLy/TdZo+6Xh35UaSEIexX0ifvjD+iLnbttBxb+5EFiurYqaXz1v/9Fh0azGqZsWOs+TgRoXN59zWEC/F2Ggs0x3/K1sy2POVDWlJyKQRo7Qq/IOuycJpCfgExCRL+CLnBg4M9inEO+/71cXBhgnPjzXQsdy8+qdaKuYFm4Gb5t6D2RRKdUaJN6hhlR1otSE9TCLD49rMk6TUxtn+OndCpvh8LTyLcTU+Ed11kDJh5IKASIxUyDkUQNGkdSLwuLmWC6j5pVQdJdCzf5EXj/UCXq8d+CfkFSw=
+      secure: ZbKPG1d/8BUDDllmCzaxzsw3UJB+it2tbT21EexH3+TSCbxDG6oiaOqWPIRks2pMzrC6oKqAnrR0EyUFt0T80A95n4gpW5Q0q4bhkKaEp5z298ASa97bIWd/H/tX7dH7lGDMgc9Oh21/opFLbV1VDQvShnBScHXcjTWeUztukCMnxWCw/70jpHTIJNWamwqFDdL+tEyOzZWuV3pEJYiCEZK+n6oG6v8NfXit1yOQWHnEgaN8oe21Byt1Iu69hbUupP1XbTYmF8tOTzPSXD444c1KvH4d5CH/cBgtv4FfpAAN7ybOXeAXQ8P+58+tkGmeoQa15+Q5a6deHsganezLVD0MxXIy48YypV8RQaw6kPSPqTKO33q3w0cIrxhUZ6lhjOwR8s1iMeQuCik7M9be65ZfzKE+vpQI8h+IQ1ekE31jQGBxoxEOlMAWiOjgGjMo0Skr1O+7IfKgpdxoVClQQ0F9Spmizj6p66LK1vJj7WoU6lyqkVXMgjtPT/LOc49iCFzsFc5V1YLfAw3hTKwwnoF5aDZ88Mi72SIflDRWRVeAWBQc8UzvJmNV8/tzTKnJ68xG4VyOlOCy2k5ekpqNBbRQimzsIw4Nuc75vvwk7pWGxSsNsdyzePmVZf1YzkbEBkgXsRAxpSelrVt1Yg5moVvPX7kGlWkb63Net78Gi1M=
     file: dist/app.zip
     on:
       repo: DeskproApps/app-installer
@@ -17,5 +17,3 @@ deploy:
     api_key: $NPM_TOKEN
     email: radu.helstern@gmail.com
     skip_cleanup: true
-    on:
-      tags: true

@@ -34,6 +34,7 @@ test('createCustomFields sends the expected request when given valid arguments',
         data: {
           title: 'Field A',
           is_enabled: true,
+          is_user_enabled: false,
           is_agent_field: true,
           alias:  'app:12:fieldA',
           handler_class: 'Application\\DeskPRO\\CustomFields\\Handler\\DataJson'
@@ -49,6 +50,7 @@ test('createCustomFields sends the expected request when given valid arguments',
         data: {
           title: 'Field B',
           is_enabled: true,
+          is_user_enabled: false,
           is_agent_field: true,
           alias:  'app:12:fieldB',
           handler_class: 'Application\\DeskPRO\\CustomFields\\Handler\\DataList'
@@ -64,6 +66,7 @@ test('createCustomFields sends the expected request when given valid arguments',
         data: {
           title: 'Field C',
           is_enabled: true,
+          is_user_enabled: false,
           is_agent_field: true,
           alias:  'app:12:fieldC',
           handler_class: 'Application\\DeskPRO\\CustomFields\\Handler\\Data'

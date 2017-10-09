@@ -40,6 +40,7 @@ const toCustomFieldRequest = (instanceId, customField) =>
     data: {
       title: customField.title,
       is_enabled: true,
+      is_user_enabled: false,
       is_agent_field: true,
       alias: customField.getQualifiedAlias(instanceId),
       handler_class: customField.getHandlerClass()

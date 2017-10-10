@@ -1,11 +1,12 @@
 language: node_js
 node_js:
-- '6'
-install:
+  - '6'
+before_install:
   - npm install -g npm@5.3.0
+install:
   - npm install --no-optional
 script:
-- npm test
+  - npm test
 before_deploy: npm run package
 deploy:
   - provider: releases

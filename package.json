@@ -44,23 +44,26 @@
     "externalApis": []
   },
   "dependencies": {
-    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.21",
-    "prop-types": "^15.5.10",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
-    "simpl-schema": "0.3.2",
-    "uniforms": "1.20.4",
-    "uniforms-unstyled": "1.20.4"
+    "prop-types": "^15.5.10"
   },
   "devDependencies": {
+    "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.21",
+    "simpl-schema": "0.3.2",
+    "uniforms": "1.20.4",
+    "uniforms-unstyled": "1.20.4",
     "@deskproapps/dpat": "0.7.0",
-    "changelog-verify": "1.0.4",
     "deskpro-components": "1.0.2",
     "file-loader": "1.1.5",
     "jsdom": "11.2.0",
     "react-test-renderer": "15.6.1",
     "url-loader": "0.6.2",
+    "changelog-verify": "1.0.4",
     "version-changelog": "2.1.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^1"
   },
   "publishConfig": {
     "access": "public"

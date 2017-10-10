@@ -1,3 +1,5 @@
 *
 !dist/*
 dist/app.zip
+!dist/html/*
+!dist/assets/*

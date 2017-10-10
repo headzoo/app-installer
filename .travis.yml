@@ -12,10 +12,10 @@ deploy:
       secure: ZbKPG1d/8BUDDllmCzaxzsw3UJB+it2tbT21EexH3+TSCbxDG6oiaOqWPIRks2pMzrC6oKqAnrR0EyUFt0T80A95n4gpW5Q0q4bhkKaEp5z298ASa97bIWd/H/tX7dH7lGDMgc9Oh21/opFLbV1VDQvShnBScHXcjTWeUztukCMnxWCw/70jpHTIJNWamwqFDdL+tEyOzZWuV3pEJYiCEZK+n6oG6v8NfXit1yOQWHnEgaN8oe21Byt1Iu69hbUupP1XbTYmF8tOTzPSXD444c1KvH4d5CH/cBgtv4FfpAAN7ybOXeAXQ8P+58+tkGmeoQa15+Q5a6deHsganezLVD0MxXIy48YypV8RQaw6kPSPqTKO33q3w0cIrxhUZ6lhjOwR8s1iMeQuCik7M9be65ZfzKE+vpQI8h+IQ1ekE31jQGBxoxEOlMAWiOjgGjMo0Skr1O+7IfKgpdxoVClQQ0F9Spmizj6p66LK1vJj7WoU6lyqkVXMgjtPT/LOc49iCFzsFc5V1YLfAw3hTKwwnoF5aDZ88Mi72SIflDRWRVeAWBQc8UzvJmNV8/tzTKnJ68xG4VyOlOCy2k5ekpqNBbRQimzsIw4Nuc75vvwk7pWGxSsNsdyzePmVZf1YzkbEBkgXsRAxpSelrVt1Yg5moVvPX7kGlWkb63Net78Gi1M=
     file: dist/app.zip
     on:
-      repo: DeskproApps/app-installer
+      tags: true
   - provider: npm
     api_key: $NPM_TOKEN
     email: radu.helstern@gmail.com
     skip_cleanup: true
     on:
-      all_branches: true
+      tags: true

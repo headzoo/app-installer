@@ -85,13 +85,13 @@ export class AppInstallerApp extends React.Component
     }
 
     if (screen === 'settings') {
-      const { installer:Installer } = this.props;
+      const { installer:ScreenSettings } = this.props;
       const { manifest, assetEndpoint } = this.state;
       const settings = JSON.parse(JSON.stringify(manifest.settings));
 
       return (
         <PageApp icon={`${assetEndpoint}/icon.png`} description={manifest.description} title={manifest.title} version={manifest.appVersion}>
-          <Installer install={this.installApp.bind(this)} settings={settings} settingsForm={UniformsSettingsForm}/>
+          <ScreenSettings dpapp={this.props.dpapp} install={this.installApp.bind(this)} settings={settings} settingsForm={UniformsSettingsForm}/>
         </PageApp>
       );
     }

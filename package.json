@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "dpat server .",
     "package": "dpat clean . && dpat compile . && dpat verify ./dist && dpat package .",
+    "package2": "dpat clean . && dpat compile . ",
     "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md",
     "test": "dpat test .",
     "verify": "dpat verify ./dist"
@@ -44,17 +45,17 @@
     "externalApis": []
   },
   "dependencies": {
-    "react": "^15.5.3",
-    "react-dom": "^15.5.3",
-    "prop-types": "^15.5.10"
+    "simpl-schema": "0.3.2",
+    "uniforms": "1.20.4",
+    "uniforms-unstyled": "1.20.4"
   },
   "devDependencies": {
     "@deskproapps/deskproapps-sdk-core": "1.0.0-beta.21",
-    "simpl-schema": "0.3.2",
-    "uniforms": "1.20.4",
-    "uniforms-unstyled": "1.20.4",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.3",
+    "react-dom": "^15.5.3",
+    "deskpro-components": "^1.0",
     "@deskproapps/dpat": "0.7.0",
-    "deskpro-components": "1.0.2",
     "file-loader": "1.1.5",
     "jsdom": "11.2.0",
     "react-test-renderer": "15.6.1",
@@ -62,8 +63,12 @@
     "changelog-verify": "1.0.4",
     "version-changelog": "2.1.0"
   },
-  "optionalDependencies": {
-    "fsevents": "^1"
+  "peerDependencies": {
+    "@deskproapps/deskproapps-sdk-core": "^1.0.0-beta.21",
+    "prop-types": "^15.5.10",
+    "react": "^15.5",
+    "react-dom": "^15.5",
+    "deskpro-components": "^1.0"
   },
   "publishConfig": {
     "access": "public"

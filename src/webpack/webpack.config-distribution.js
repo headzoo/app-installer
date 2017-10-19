@@ -12,16 +12,6 @@ module.exports = function (env) {
   );
 
   const resources = dpat.Resources.copyDescriptors(buildManifest, PROJECT_ROOT_PATH);
-  const bundlePackages = dpat.BuildUtils
-    .bundlePackages(PROJECT_ROOT_PATH, 'devDependencies')
-    .concat([
-      'deskpro-components',
-      '@deskproapps/deskproapps-sdk-core',
-      'simpl-schema',
-      'uniforms',
-      'uniforms-unstyled'
-    ]);
-
   const babelOptions = dpat.Babel.resolveOptions(PROJECT_ROOT_PATH, { babelrc: false });
   // the relative path of the assets inside the distribution bundle
   const ASSET_PATH = 'assets';
@@ -32,8 +22,10 @@ module.exports = function (env) {
   configParts.push({
     devtool: DEBUG ? 'source-map' : false,
     entry: {
-      install: [ path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js') ],
-      'install-vendor': bundlePackages
+      install: [
+        path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js')
+      ],
+      // 'install-vendor' bundle is create by CommonsChunkPlugin
     },
     externals: {
       'react': 'React',
@@ -91,8 +83,20 @@ module.exports = function (env) {
 
       // replace a standard webpack chunk hashing with custom (md5) one
       new dpat.Webpack.WebpackChunkHash(),
+
       // vendor libs + extracted manifest
-      new dpat.Webpack.optimize.CommonsChunkPlugin({ name: ['install-vendor', 'install-manifest'], minChunks: Infinity }),
+      new dpat.Webpack.optimize.CommonsChunkPlugin({
+        name: ['install-vendor'],
+        minChunks: function (module) {
+          // this assumes your vendor imports exist in the node_modules directory
+          return module.context && module.context.indexOf("node_modules") !== -1;
+        }
+      }),
+      new dpat.Webpack.optimize.CommonsChunkPlugin({
+        name: ['install-manifest'],
+        minChunks: Infinity
+      }),
+
       // export map of chunks that will be loaded by the extracted manifest
       new dpat.Webpack.ChunkManifestPlugin({ filename: 'install-manifest.json', manifestVariable: 'webpackManifest', inlineManifest: false }),
       // mapping of all source file names to their corresponding output file

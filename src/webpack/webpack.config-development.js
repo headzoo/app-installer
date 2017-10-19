@@ -13,14 +13,6 @@ module.exports = function (env)
   );
 
   const resources = dpat.Resources.copyDescriptors(buildManifest, PROJECT_ROOT_PATH);
-  const bundlePackages = dpat.BuildUtils.bundlePackages(PROJECT_ROOT_PATH, 'devDependencies')
-    .concat([
-      'deskpro-components',
-      '@deskproapps/deskproapps-sdk-core',
-      'simpl-schema',
-      'uniforms',
-      'uniforms-unstyled'
-    ]);
   const babelOptions = dpat.Babel.resolveOptions(PROJECT_ROOT_PATH, { babelrc: false });
 
   // emulate the Files API path which is used by deskpro to fetch the app files
@@ -60,7 +52,7 @@ module.exports = function (env)
         `webpack-dev-server/client?http://localhost:31080`,
         path.resolve(PROJECT_ROOT_PATH, 'src/webpack/entrypoint.js')
       ],
-      'install-vendor': bundlePackages
+      // 'install-vendor' bundle is create by CommonsChunkPlugin
     },
     module: {
       loaders: [
@@ -101,7 +93,15 @@ module.exports = function (env)
     plugins: [
       extractCssPlugin,
 
-      new dpat.Webpack.optimize.CommonsChunkPlugin({name: ['install-vendor'], minChunks: Infinity}),
+      // vendor libs + extracted manifest
+      new dpat.Webpack.optimize.CommonsChunkPlugin({
+        name: ['install-vendor'],
+        minChunks: function (module) {
+          // this assumes your vendor imports exist in the node_modules directory
+          return module.context && module.context.indexOf("node_modules") !== -1;
+        }
+      }),
+
       new dpat.Webpack.NamedModulesPlugin(),
 
       new dpat.Webpack.CopyWebpackPlugin(resources, { debug: true, copyUnmodified: true }),

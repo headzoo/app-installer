@@ -9,8 +9,7 @@
     "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md",
     "test": "dpat test .",
     "verify": "dpat verify ./dist",
-    "preinstall": "rm -rf npm-shrinkwrap; rm -rf .npmignore",
-    "prepare": "rm -rf npm-shrinkwrap; rm -rf .npmignore"
+    "prepare": "npm prefix; rm -rf npm-shrinkwrap.json; rm -rf .npmignore"
   },
   "repository": {
     "type": "git",
